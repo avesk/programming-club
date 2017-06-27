@@ -64,12 +64,11 @@ class LongestPalindrome{
 		int nextPossibleLongest;
 
 		String s = generateFindEvenStr( sTemp );
+        // String s = sTemp;
 
 		//Iterate until condition 2 is met
 		// i = current center
-		while( lengthArray[i] < (s.length() - i) ){
-
-			System.out.println( "This is i start of While: " + i );
+		while( i < s.length() ){
 
 			// 1. Mark down the length of that palindrome in a lengthArray at i
 			lengthArray[i] = palindromeAt( s, i ); 
@@ -89,29 +88,60 @@ class LongestPalindrome{
 			// m = leftHand pointer
 			for( int m = i-1; m >= leftEdge; m-- ){
 
-				 System.out.println( "This is m: " + m );
-
+				// System.out.println( "This is m: " + m );
+                
+                // if( i == 10 ){
+                //     System.out.println( "lengthArray[m]: " + lengthArray[m] );
+                //     System.out.println( (m - lengthArray[m]/2) + " ?= " + leftEdge
+                //     + "\n" + (lengthArray[m]/2 + (2*i - m)) + " ?= " + rightEdge );
+                    
+                // }
+                    
 				// case 1: 
 				if( m - lengthArray[m]/2 > leftEdge ){
 
 					lengthArray[ 2*i - m ] = lengthArray[m];
-					System.out.println( "IN CASE 1!!" );
+				// 	System.out.println( "IN CASE 1!!" );
 
 				}
+				
+				// case 2:
+                if( i + lengthArray[m]/2+1 >= s.length()-1 ){
+                    // System.out.println( "i: " + i + "\n" + "lengthArray[m]: " + lengthArray[m] );
+                    // System.out.println( "IN CASE 2!!" );
 
+					lengthArray[ 2*i - m ] = lengthArray[m];
+					
+				// 	for( int cnt = 0; cnt<lengthArray.length; cnt++ ){
+		    
+    //                     System.out.println( "Index: " + cnt + " Value: " + lengthArray[cnt] );
+		    
+		  //          }
+		            
+					return removePlaceHolders( s, lengthArray );
+
+				}
+				
 				// case 3:
-				else if( m - lengthArray[m]/2 == leftEdge && lengthArray[m] + i == rightEdge ){
-
+				else if( m - lengthArray[m]/2 == leftEdge && lengthArray[m]/2 + (2*i - m) == rightEdge ){
+                    
 					lengthArray[ 2*i - m  ] = lengthArray[m];
-					nextPossibleLongest = 2*i - m;
-					System.out.println( "IN CASE 3!!" );
+					
+					if( nextPossibleLongest != rightEdge+1 ){
+					    
+					    if( lengthArray[ 2*i - m  ] > lengthArray[ nextPossibleLongest ] )
+					        nextPossibleLongest = 2*i - m;
+					}
+					else
+					    nextPossibleLongest = 2*i - m;
+				// 	System.out.println( "IN CASE 3!!" );
 				}
 
 				// case 4:
 				else if( m - lengthArray[m]/2 < leftEdge  ){
 
 					lengthArray[ 2*i - m ] = (m - leftEdge)*2 +1;
-					System.out.println( "IN CASE 4!!" );
+				// 	System.out.println( "IN CASE 4!!" );
 
 				}
 
@@ -119,24 +149,17 @@ class LongestPalindrome{
 
 			i = nextPossibleLongest < s.length()-1 ? nextPossibleLongest : s.length()-1;
 
-			System.out.println( "This is i end of While: " + i );
+// 			System.out.println( "This is i end of While: " + i );
 
 		}	
+		
+// 		for( int cnt = 0; cnt<lengthArray.length; cnt++ ){
+		    
+//             System.out.println( "Index: " + cnt + " Value: " + lengthArray[cnt] );
+		    
+// 		}
 
-		// Find the largest palindrome centered at k
-		int max = 0;
-		for( int k = 0; k<lengthArray.length; k++ ){
-
-			if( lengthArray[k] > max )
-				max = k;
-
-		}
-
-		for( int q = 0; q<lengthArray.length; q++)
-			System.out.println( "Index: " + q + "Value: " + lengthArray[q] );
-
-		System.out.println( "This is max: " + lengthArray[max] );
-		return s.substring( max - lengthArray[max]/2, max + lengthArray[max]/2 +1 );
+		return removePlaceHolders( s, lengthArray );
 
 	}
 
@@ -158,7 +181,7 @@ class LongestPalindrome{
  
 	}
 
-	//Untested Stuff
+
 	public static String generateFindEvenStr( String s ){
 
 		String newString = "";
@@ -175,5 +198,32 @@ class LongestPalindrome{
 		return newString;
 
 	}
+	
+	public static String removePlaceHolders( String s, int[] lengthArray ){
+	    
+	    // Find the largest palindrome centered at k
+		int max = 0;
+		for( int k = 0; k<lengthArray.length; k++ ){
+		    
+			if( lengthArray[k] > lengthArray[max] )
+				max = k;
+
+		}
+	    
+	    String tempLongestStr = s.substring( max - lengthArray[max]/2, max + lengthArray[max]/2 +1 );
+	    String longestStr = "";
+
+		for( int l = 1; l < tempLongestStr.length(); l+=2 ){
+
+			longestStr += tempLongestStr.charAt( l );
+
+		}
+		
+		return longestStr;
+	    
+	}
+
+// edisubdsbabesuaaabbaaaoerundskracecar
+// vsadfaxbabaaabbaaa
 
 }
