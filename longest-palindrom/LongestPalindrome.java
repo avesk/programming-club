@@ -56,12 +56,14 @@ class LongestPalindrome{
 *
 **/
 
-	public static String longestPalindrome( String s ){
+	public static String longestPalindrome( String sTemp ){
 
-		int[] lengthArray = new int[s.length()];
+		int[] lengthArray = new int[sTemp.length()*2 +1];
 		int i = 0;
 		int leftEdge, rightEdge;
 		int nextPossibleLongest;
+
+		String s = generateFindEvenStr( sTemp );
 
 		//Iterate until condition 2 is met
 		// i = current center
@@ -156,16 +158,15 @@ class LongestPalindrome{
  
 	}
 
-/** 
 	//Untested Stuff
 	public static String generateFindEvenStr( String s ){
 
 		String newString = "";
 
-		for( char c : s ){
+		for( int i = 0; i < s.length(); i++ ){
 
 			newString += '$';
-			newString += c;
+			newString += s.charAt( i );
 
 		}
 
@@ -174,5 +175,5 @@ class LongestPalindrome{
 		return newString;
 
 	}
-**/
+
 }
