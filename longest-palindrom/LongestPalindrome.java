@@ -63,12 +63,11 @@ class LongestPalindrome{
 		int leftEdge, rightEdge;
 		int nextPossibleLongest;
 
-		String s = generateFindEvenStr( sTemp );
-        // String s = sTemp;
+		char[] s = generateFindEvenStr( sTemp ); // N*2 time
 
 		//Iterate until condition 2 is met
 		// i = current center
-		while( i < s.length() ){
+		while( i < s.length ){
 
 			// 1. Mark down the length of that palindrome in a lengthArray at i
 			lengthArray[i] = palindromeAt( s, i ); 
@@ -87,15 +86,6 @@ class LongestPalindrome{
 			//Iterate through lefthand palindrome lengths checking cases
 			// m = leftHand pointer
 			for( int m = i-1; m >= leftEdge; m-- ){
-
-				// System.out.println( "This is m: " + m );
-                
-                // if( i == 10 ){
-                //     System.out.println( "lengthArray[m]: " + lengthArray[m] );
-                //     System.out.println( (m - lengthArray[m]/2) + " ?= " + leftEdge
-                //     + "\n" + (lengthArray[m]/2 + (2*i - m)) + " ?= " + rightEdge );
-                    
-                // }
                     
 				// case 1: 
 				if( m - lengthArray[m]/2 > leftEdge ){
@@ -106,17 +96,10 @@ class LongestPalindrome{
 				}
 				
 				// case 2:
-                if( i + lengthArray[m]/2+1 >= s.length()-1 ){
-                    // System.out.println( "i: " + i + "\n" + "lengthArray[m]: " + lengthArray[m] );
+                if( i + lengthArray[m]/2+1 >= s.length-1 ){
                     // System.out.println( "IN CASE 2!!" );
 
 					lengthArray[ 2*i - m ] = lengthArray[m];
-					
-				// 	for( int cnt = 0; cnt<lengthArray.length; cnt++ ){
-		    
-    //                     System.out.println( "Index: " + cnt + " Value: " + lengthArray[cnt] );
-		    
-		  //          }
 		            
 					return removePlaceHolders( s, lengthArray );
 
@@ -147,30 +130,22 @@ class LongestPalindrome{
 
 			}
 
-			i = nextPossibleLongest < s.length()-1 ? nextPossibleLongest : s.length()-1;
-
-// 			System.out.println( "This is i end of While: " + i );
+			i = nextPossibleLongest < s.length-1 ? nextPossibleLongest : s.length-1;
 
 		}	
-		
-// 		for( int cnt = 0; cnt<lengthArray.length; cnt++ ){
-		    
-//             System.out.println( "Index: " + cnt + " Value: " + lengthArray[cnt] );
-		    
-// 		}
 
 		return removePlaceHolders( s, lengthArray );
 
 	}
 
-	public static int palindromeAt( String s, int x ){
+	public static int palindromeAt( char[] s, int x ){
 
 		int i = x-1;
 		int j = i+2;
 
-		while( j<s.length() && i>=0 ){
-			// System.out.println( "i: " + i + " j: " + j );
-			if( s.charAt(i) != s.charAt(j) )
+		while( j<s.length && i>=0 ){
+
+			if( s[i] != s[j] )
 				return (j-1) - i;
 			i--;
 			j++;
@@ -182,24 +157,34 @@ class LongestPalindrome{
 	}
 
 
-	public static String generateFindEvenStr( String s ){
+	public static char[] generateFindEvenStr( String s ){
 
-		String newString = "";
+		char[] newString = new char[s.length()*2 +1];
 
-		for( int i = 0; i < s.length(); i++ ){
+		int i = 0;
+		for( int j = 0; j < newString.length; j++ ){
 
-			newString += '$';
-			newString += s.charAt( i );
+			if( (j % 2) == 1 ){
+
+				newString[j] = s.charAt( i );
+				i++;
+
+			}
+			else{
+
+				newString[j] = '$';
+
+			}
 
 		}
 
-		newString += '$';
+		// System.out.println( "This is newString: " + new String( newString ) );
 
 		return newString;
 
 	}
 	
-	public static String removePlaceHolders( String s, int[] lengthArray ){
+	public static String removePlaceHolders( char[] s, int[] lengthArray ){
 	    
 	    // Find the largest palindrome centered at k
 		int max = 0;
@@ -209,17 +194,18 @@ class LongestPalindrome{
 				max = k;
 
 		}
-	    
-	    String tempLongestStr = s.substring( max - lengthArray[max]/2, max + lengthArray[max]/2 +1 );
-	    String longestStr = "";
 
-		for( int l = 1; l < tempLongestStr.length(); l+=2 ){
+	    char[] longestStr = new char[ lengthArray[max] ];
 
-			longestStr += tempLongestStr.charAt( l );
+	    int j = 0;
+		for( int i = max - lengthArray[max]/2 +1; i < max + lengthArray[max]/2; i+=2 ){
+
+			longestStr[j] = s[i];
+			j++;
 
 		}
 		
-		return longestStr;
+		return new String( longestStr );
 	    
 	}
 
