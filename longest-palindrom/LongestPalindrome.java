@@ -67,7 +67,7 @@ class LongestPalindrome{
 
 		//Iterate until condition 2 is met
 		// i = current center
-		while( i < s.length ){
+		while( lengthArray[i] <= s.length ){
 
 			// 1. Mark down the length of that palindrome in a lengthArray at i
 			lengthArray[i] = palindromeAt( s, i ); 
@@ -86,7 +86,7 @@ class LongestPalindrome{
 			//Iterate through lefthand palindrome lengths checking cases
 			// m = leftHand pointer
 			for( int m = i-1; m >= leftEdge; m-- ){
-                    
+			    
 				// case 1: 
 				if( m - lengthArray[m]/2 > leftEdge ){
 
@@ -195,7 +195,7 @@ class LongestPalindrome{
 
 		}
 
-	    char[] longestStr = new char[ lengthArray[max] ];
+	    char[] longestStr = new char[ lengthArray[max]/2 ];
 
 	    int j = 0;
 		for( int i = max - lengthArray[max]/2 +1; i < max + lengthArray[max]/2; i+=2 ){
@@ -205,10 +205,15 @@ class LongestPalindrome{
 
 		}
 		
-		return new String( longestStr );
+// 		for( int a = 0; a<lengthArray.length; a++ ){
+		    
+// 		    System.out.println( " Index: " + a + " Value: " + lengthArray[a] );
+		    
+// 		}
+		
+		return String.valueOf( longestStr );
 	    
 	}
-
 // edisubdsbabesuaaabbaaaoerundskracecar
 // vsadfaxbabaaabbaaa
 
